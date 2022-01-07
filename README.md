@@ -4,3 +4,6 @@ to download requirements:
 *pip3 install -r requirements.txt
 to run flask app:
 *run 'flask run'. in the ide terminal
+*change flask port
+flask run -h localhost -p 3000
+
