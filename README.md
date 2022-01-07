@@ -14,7 +14,7 @@ Programs used:
 [app.py](https://github.com/a-rhodes-vcu/information_extractor/blob/main/app.py)
 <br>
 
-In [ie.py](https://github.com/a-rhodes-vcu/information_extractor/blob/main/ie.py) a dictionary is made that contains the lemma as the key and the sentence as the value. This is used later to return the sentences from the article. A list is made that contants inner lists of the article sentence and the question, for example:
+In [ie.py](https://github.com/a-rhodes-vcu/information_extractor/blob/main/ie.py) a dictionary is made that contains the lemma as the key and the sentence as the value. This is used later to return the sentences from the article. A list is made that contains inner lists of the article sentence and the question, for example:
 content_and_question = ['Babies are babies','What are babies?']
 
 ```
@@ -60,7 +60,7 @@ Then the cosine similarity is calculated. Cosine similarity is a measure of simi
         cosine_sim_dict[min_value] = item[0]
 
 ```
-Finally, the three smallest cosine similarities are chosen, from there we extract the lemma sentence and then return the full sentences from the article.
+Finally, the four smallest cosine similarities are used to generate the four most relevant sentences from the article. The most relevant (smallest cosine similarity) will be printed first
 ```
  try:
         # sort dict so smallest number is first, use only first three sentences
