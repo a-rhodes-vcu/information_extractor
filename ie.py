@@ -54,7 +54,6 @@ def get_response(content,question):
             content_and_question.append([content_as_string,question_as_string])
 
     cosine_sim_dict = {}
-    response_string = "Here are some info:\n"
     for item in content_and_question:
         # transform the words in each inner list into a matrix that looks like this:
         # (0, 1)  1 (sentence index, word index) count of word appearing in that location.
@@ -78,16 +77,20 @@ def get_response(content,question):
         # save min value in dictionary as key, value is single sentence from the content
         cosine_sim_dict[min_value] = item[0]
 
-    print(question + "\n")
-
+    response_string_dict = {}
     try:
         # sort dict so smallest number is first, use only first three sentences
         sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
-        for key in sorted_cs_dict:
-            # print dict contents by taking key to retrieve lemma sentence and using that to print out full sentence
-            lemma_sentence = cosine_sim_dict[key]
-            response_string += content_dict[lemma_sentence] + "."
-        return (response_string)
+        for cs in sorted_cs_dict:
+            # retrieve single sentence from content, store as value, key is cosine similarity
+            lemma_sentence = cosine_sim_dict[cs]
+            respond_sentence = content_dict[lemma_sentence]
+            if cs not in response_string_dict:
+                response_string_dict[cs] = [respond_sentence]
+            else:
+                response_string_dict[cs].append(respond_sentence)
+
+        return (response_string_dict)
 
     except:
         return "Sorry, unable to process question"
@@ -98,9 +101,9 @@ def get_response(content,question):
 # At 4 months, a baby typically can hold his/her head steady without support, and at 6 months, he/she begins to sit with a little help. At 9 months he/she sits well without support, and gets in and out of a sitting position but may require help. At 12 months, he/she gets into the sitting position without help.
 #
 # Tummy time helps strengthen the upper body and neck muscles that your baby needs to sit up. Around 6 months, encourage sitting up by helping your baby to sit or support him/her with pillows to allow him/herher to look around."""
-#
-# question = "when does a baby situp"
 
-#get_response(content,question)
+#question = "when does a baby situp"
+
+#print(get_response(content,question))
 
 
