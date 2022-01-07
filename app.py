@@ -7,11 +7,12 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/cleopatra')
+@app.route('/cleopatra', methods=["POST"])
 def cleopatra():
     try:
-        content = request.args.get('article_content')
-        question = request.args.get('question')
+        json_data = request.json
+        content = json_data['article_content']
+        question = json_data['question']
         return get_response(content,question)
     except:
         return "Error processing request"
