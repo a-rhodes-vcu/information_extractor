@@ -5,8 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 count_vectorizer = CountVectorizer()
 from nltk.stem import WordNetLemmatizer
-content_dict = {}
-content_and_question = []
 lemmatizer = WordNetLemmatizer()
 
 try:
@@ -19,6 +17,7 @@ else:
 sw_nltk = stopwords.words('english')
 
 def create_dataframe(matrix, tokens):
+    
     # create row names
     doc_names = [f'doc_{i + 1}' for i, _ in enumerate(matrix)]
     # create data frame where tokens are the words in the sentence and matrix is the count
@@ -26,6 +25,8 @@ def create_dataframe(matrix, tokens):
     return (df)
 
 def get_response(content,question):
+    content_dict = {}
+    content_and_question = []
 
     """
     :param content: string of the article content
