@@ -7,10 +7,11 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/query-example')
-def query_example():
-    language = request.args.get('article_content')
-    return get_response(language)
+@app.route('/cleopatra')
+def cleopatra():
+    content = request.args.get('article_content')
+    question = request.args.get('question')
+    return get_response(content,question)
 
 @app.route('/post', methods=["POST"])
 def testpost():
