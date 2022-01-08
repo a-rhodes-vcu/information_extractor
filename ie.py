@@ -3,7 +3,9 @@ import ssl
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 count_vectorizer = CountVectorizer()
+
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
@@ -15,6 +17,8 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 sw_nltk = stopwords.words('english')
+
+sw_nltk.append('child')
 
 def create_dataframe(matrix, tokens):
     
@@ -35,7 +39,7 @@ def get_response(content,question):
     """
 
     # first process text
-    text = content.replace(". ",".").replace("\n","").replace("","")
+    text = content.replace(". ",".").replace("\n","").replace("\"","").strip()
     token_text = text.split(".")
 
     for sentence in token_text:
@@ -54,7 +58,8 @@ def get_response(content,question):
             content_and_question.append([content_as_string,question_as_string])
 
     cosine_sim_dict = {}
-    response_string = "Here are some info:\n"
+    cs_list = []
+    lemma_list = []
     for item in content_and_question:
         # transform the words in each inner list into a matrix that looks like this:
         # (0, 1)  1 (sentence index, word index) count of word appearing in that location.
@@ -76,31 +81,34 @@ def get_response(content,question):
         # for cosine similarity, we want the smallest number because that means the vectors are more similar
         min_value = min(de["doc_1"])
         # save min value in dictionary as key, value is single sentence from the content
-        cosine_sim_dict[min_value] = item[0]
+        if item[0] and "\\" not in item[0]:
+            if min_value not in cosine_sim_dict:
+                cosine_sim_dict[min_value] = [item[0]]
+            else:
+                cosine_sim_dict[min_value].append(item[0])
 
-    print(question + "\n")
-
+    response_string_dict = {}
     try:
         # sort dict so smallest number is first, use only first three sentences
         sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
-        for key in sorted_cs_dict:
-            # print dict contents by taking key to retrieve lemma sentence and using that to print out full sentence
-            lemma_sentence = cosine_sim_dict[key]
-            response_string += content_dict[lemma_sentence] + "."
-        return (response_string)
+        for cs in sorted_cs_dict:
+            # retrieve single sentence from content, store as value, key is cosine similarity
+            lemma_sentence_list = cosine_sim_dict[cs]
+            for lemma in lemma_sentence_list:
+                respond_sentence = content_dict[lemma]
+                if cs not in response_string_dict:
+                    response_string_dict[cs] = [lemma]
+                else:
+                    response_string_dict[cs].append(respond_sentence)
+
+        return (response_string_dict)
 
     except:
         return "Sorry, unable to process question"
 
 # comments it out for testing
-# content = """Babies must be able to hold their heads up without support and have enough upper body strength before being able to sit up on their own. Babies often can hold their heads up around 2 months, and begin to push up with their arms while lying on their stomachs.
-#
-# At 4 months, a baby typically can hold his/her head steady without support, and at 6 months, he/she begins to sit with a little help. At 9 months he/she sits well without support, and gets in and out of a sitting position but may require help. At 12 months, he/she gets into the sitting position without help.
-#
-# Tummy time helps strengthen the upper body and neck muscles that your baby needs to sit up. Around 6 months, encourage sitting up by helping your baby to sit or support him/her with pillows to allow him/herher to look around."""
-#
-# question = "when does a baby situp"
 
-#get_response(content,question)
+
+#print(get_article(list_of_articles,question))
 
 

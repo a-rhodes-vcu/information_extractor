@@ -6,12 +6,16 @@ app = Flask(__name__)
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-
+import json
 @app.route('/cleopatra')
 def cleopatra():
+
     content = request.args.get('article_content')
     question = request.args.get('question')
-    return get_response(content,question)
+    try:
+        return get_response(content,question)
+    except:
+        return "Error processing request"
 
 @app.route('/post', methods=["POST"])
 def testpost():
