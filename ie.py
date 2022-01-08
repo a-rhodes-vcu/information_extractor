@@ -83,11 +83,13 @@ def get_response(content,question):
         # for cosine similarity, we want the smallest number because that means the vectors are more similar
         min_value = min(de["doc_1"])
         # save min value in dictionary as key, value is single sentence from the content
-        if item[0] and "\\" not in item[0]:
-            if min_value not in cosine_sim_dict:
-                cosine_sim_dict[min_value] = [item[0]]
-            else:
-                cosine_sim_dict[min_value].append(item[0])
+        # exclude values if they are 0.0
+        if min_value != 0.0:
+            if item[0] and "\\" not in item[0]:
+                if min_value not in cosine_sim_dict:
+                    cosine_sim_dict[min_value] = [item[0]]
+                else:
+                    cosine_sim_dict[min_value].append(item[0])
 
     response_string_dict = {
         'data': []
