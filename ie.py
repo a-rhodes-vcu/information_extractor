@@ -63,7 +63,9 @@ def get_response(content,question):
     for item in content_and_question:
         # transform the words in each inner list into a matrix that looks like this:
         # (0, 1)  1 (sentence index, word index) count of word appearing in that location.
-        vector_matrix = count_vectorizer.fit_transform(item)
+        # vector_matrix = count_vectorizer.fit_transform(item)
+        vectorizer = TfidfVectorizer()
+        vector_matrix = vectorizer.fit_transform(item)
         vector_matrix.toarray()
 
         # if you were interested in seeing what this looks like under the hood. doc_1 refers to the content and doc_2 refers to the question
@@ -87,21 +89,30 @@ def get_response(content,question):
             else:
                 cosine_sim_dict[min_value].append(item[0])
 
-    response_string_dict = {}
+    response_string_dict = {
+        'data': []
+    }
     try:
         # sort dict so smallest number is first, use only first three sentences
-        sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
+        sorted_cs_dict = sorted(cosine_sim_dict)[0:3] # [0.0, 0.17512808619292852, 0.18068688270171662]
+
+        # init data obj
         for cs in sorted_cs_dict:
+            data_obj = {
+                'score': cs,
+                'sentences': []
+            }
+
             # retrieve single sentence from content, store as value, key is cosine similarity
             lemma_sentence_list = cosine_sim_dict[cs]
+
             for lemma in lemma_sentence_list:
                 respond_sentence = content_dict[lemma]
-                if cs not in response_string_dict:
-                    response_string_dict[cs] = [lemma]
-                else:
-                    response_string_dict[cs].append(respond_sentence)
 
-        return (response_string_dict)
+                # add lemma sentences to data obj
+                data_obj['sentences'].append(respond_sentence)
+            response_string_dict['data'].append(data_obj)
+        return response_string_dict
 
     except:
         return "Sorry, unable to process question"
