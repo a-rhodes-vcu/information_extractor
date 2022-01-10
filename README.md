@@ -60,19 +60,34 @@ Then the cosine similarity is calculated. Cosine similarity is a measure of simi
         cosine_sim_dict[min_value] = item[0]
 
 ```
-Finally, the four smallest cosine similarities are used to generate the four most relevant sentences from the article. The most relevant (smallest cosine similarity) will be printed first
+Finally, the most relevant sentence is chosen from the list of sentences.
 ```
  try:
-        # sort dict so smallest number is first, use only first three sentences
-        sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
-        for key in sorted_cs_dict:
-            # print dict contents by taking key to retrieve lemma sentence and using that to print out full sentence
-            lemma_sentence = cosine_sim_dict[key]
-            response_string += content_dict[lemma_sentence] + "."
-        return (response_string)
+       for key, value in cosine_sim_dict.items():
+       if len(value) > 4:
+           cosine_sim_dict.pop('key', None)
+    try:
+        # sort dict so smallest number is first
+        sorted_cs_dict = sorted(cosine_sim_dict)[-1:]
 
-    except:
-        return "Sorry, unable to process question"
+        # init data obj
+        for cs in sorted_cs_dict:
+            data_obj = {
+                'score': cs,
+                'sentences': []
+            }
+
+            # retrieve single sentence from content, store as value, key is cosine similarity
+            lemma_sentence_list = cosine_sim_dict[cs]
+
+            for lemma in lemma_sentence_list:
+                respond_sentence = content_dict[lemma]
+                # add lemma sentences to data obj
+                respond_sentence =  "{}{}".format(respond_sentence,".")
+                data_obj['sentences'].append(respond_sentence)
+            response_string_dict['data'].append(data_obj)
+        return response_string_dict
+
 ```
 
 
