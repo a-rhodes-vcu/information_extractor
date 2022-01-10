@@ -54,10 +54,13 @@ Then the cosine similarity is calculated. Cosine similarity is a measure of simi
         # create a data frame
         de = create_dataframe(cosine_similarity_matrix, ['doc_1', 'doc_2'])
 
-        # for cosine similarity, we want the smallest number because that means the vectors are more similar
         min_value = min(de["doc_1"])
         # save min value in dictionary as key, value is single sentence from the content
-        cosine_sim_dict[min_value] = item[0]
+        if item[0] and "\\" not in item[0]:
+            if min_value not in cosine_sim_dict:
+                cosine_sim_dict[min_value] = [item[0]]
+            else:
+                cosine_sim_dict[min_value].append(item[0])
 
 ```
 Finally, the most relevant sentence is chosen from the list of sentences.
