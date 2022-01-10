@@ -34,7 +34,7 @@ content_and_question = ['Babies are babies','What are babies?']
             content_and_question.append([content_as_string,question_as_string])
 
 ```
-Then the cosine similarity is calculated. Cosine similarity is a measure of similarity between two non-zero vectors, and it is a common way of determining text similarity. The smallest cosine similarity is chosen.
+Then the cosine similarity is calculated. Cosine similarity is a measure of similarity between two non-zero vectors, and it is a common way of determining text similarity. The smallest cosine similarity is chosen from the dataframe.
 ```
     for item in content_and_question:
         # transform the words in each inner list into a matrix that looks like this:
@@ -54,25 +54,43 @@ Then the cosine similarity is calculated. Cosine similarity is a measure of simi
         # create a data frame
         de = create_dataframe(cosine_similarity_matrix, ['doc_1', 'doc_2'])
 
-        # for cosine similarity, we want the smallest number because that means the vectors are more similar
         min_value = min(de["doc_1"])
         # save min value in dictionary as key, value is single sentence from the content
-        cosine_sim_dict[min_value] = item[0]
+        if item[0] and "\\" not in item[0]:
+            if min_value not in cosine_sim_dict:
+                cosine_sim_dict[min_value] = [item[0]]
+            else:
+                cosine_sim_dict[min_value].append(item[0])
 
 ```
-Finally, the four smallest cosine similarities are used to generate the four most relevant sentences from the article. The most relevant (smallest cosine similarity) will be printed first
+Finally, the most relevant sentence is chosen from the list of sentences.
 ```
  try:
-        # sort dict so smallest number is first, use only first three sentences
-        sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
-        for key in sorted_cs_dict:
-            # print dict contents by taking key to retrieve lemma sentence and using that to print out full sentence
-            lemma_sentence = cosine_sim_dict[key]
-            response_string += content_dict[lemma_sentence] + "."
-        return (response_string)
+       for key, value in cosine_sim_dict.items():
+       if len(value) > 4:
+           cosine_sim_dict.pop('key', None)
+    try:
+        # sort dict so smallest number is first
+        sorted_cs_dict = sorted(cosine_sim_dict)[-1:]
 
-    except:
-        return "Sorry, unable to process question"
+        # init data obj
+        for cs in sorted_cs_dict:
+            data_obj = {
+                'score': cs,
+                'sentences': []
+            }
+
+            # retrieve single sentence from content, store as value, key is cosine similarity
+            lemma_sentence_list = cosine_sim_dict[cs]
+
+            for lemma in lemma_sentence_list:
+                respond_sentence = content_dict[lemma]
+                # add lemma sentences to data obj
+                respond_sentence =  "{}{}".format(respond_sentence,".")
+                data_obj['sentences'].append(respond_sentence)
+            response_string_dict['data'].append(data_obj)
+        return response_string_dict
+
 ```
 
 
