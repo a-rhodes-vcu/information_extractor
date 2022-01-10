@@ -34,7 +34,7 @@ content_and_question = ['Babies are babies','What are babies?']
             content_and_question.append([content_as_string,question_as_string])
 
 ```
-Then the cosine similarity is calculated. Cosine similarity is a measure of similarity between two non-zero vectors, and it is a common way of determining text similarity. The smallest cosine similarity is chosen.
+Then the cosine similarity is calculated. Cosine similarity is a measure of similarity between two non-zero vectors, and it is a common way of determining text similarity. The smallest cosine similarity is chosen from the dataframe.
 ```
     for item in content_and_question:
         # transform the words in each inner list into a matrix that looks like this:
