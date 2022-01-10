@@ -101,9 +101,7 @@ def get_response(content,question):
             # create a list of lists, each inner list is a sentence from the content and question
             content_and_question.append([content_as_string,question_as_string])
 
-    #print(content_and_question)
     cosine_sim_dict = get_cs(content_and_question)
-    #print(cosine_sim_dict)
 
     response_string_dict = {
         'data': []
