@@ -108,7 +108,7 @@ def get_response(content,question):
            cosine_sim_dict.pop('key', None)
     try:
         # sort dict so smallest number is first
-        sorted_cs_dict = sorted(cosine_sim_dict)[-1:]
+        sorted_cs_dict = sorted(cosine_sim_dict)[0:3]
 
         # init data obj
         for cs in sorted_cs_dict:
