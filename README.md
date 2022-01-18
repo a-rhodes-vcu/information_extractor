@@ -1,5 +1,5 @@
 # Information Extractor
-This bot returns relevant sentences from an article that pertains to the person's query
+This is a closed domain question answering bot that returns relevant sentences from an article that pertains to the person's query
 
 ## Motivation
 I love NLP and enjoy expanding my current knowledge and skill set on it. I was googling a question and the response was a segment from a paragraph, like the one below:
