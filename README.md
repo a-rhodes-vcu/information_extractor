@@ -106,7 +106,7 @@ print(all_responses)
 ```
 and output
 ```
-...{'score': 0.1757860783933462, 'sentences': ['Babies start rolling over as early as 4 months old.', 'At 6 months old, babies will typically roll over in both directions.']}, {'score': 0.379978361591008, 'sentences': ['Some babies do a commando-type crawl, pulling themselves along the floor by their arms.']}, {'score': 0.4494364165239822, 'sentences': ['By 9 months old, babies typically creep and crawl.']}]}
+...{'score': 0.379978361591008, 'sentences': ['Some babies do a commando-type crawl, pulling themselves along the floor by their arms.']}, {'score': 0.4494364165239822, 'sentences': ['By 9 months old, babies typically creep and crawl.']}]}
 ```
 In this case, the highest 'scored' answer is 'By 9 months old, babies typically creep and crawl.', given the content this is the best sentence to based off the person's query.
 
