@@ -93,6 +93,22 @@ Finally, the most relevant sentence is chosen from the list of sentences.
 
 ```
 
+## How to run
+If you just want to run ie.py without running the flask app all you have to do is pass in a content and question to the program. Like this:
+```
+content = """At 6 months old, babies will rock back and forth on hands and knees. This is a building block to crawling. As the child rocks, he may start to crawl backward before moving forward. By 9 months old, babies typically creep and crawl. Some babies do a commando-type crawl, pulling themselves along the floor by their arms.To encourage a child’s crawling development, allow your baby to play on the floor in a safe area away from stairs. Place favorite toys just out of reach as the baby is rocking back and forth. Encourage him/her to reach for his/her toy.As your baby becomes more mobile, it’s important to childproof your home. Lock up household cleaning, laundry, lawn care and car care products. Use safety gates and lock doors to outside and the basement.
+Babies start rolling over as early as 4 months old. They will rock from side to side, a motion that is the foundation for rolling over. They may also roll over from tummy to back. At 6 months old, babies will typically roll over in both directions. It’s common for babies to roll over from tummy to back for a month or two before rolling over from their back to front.
+To encourage rolling over, place your baby on a blanket on the floor with a toy or book to one side near him/her to reach toward with his/her arms.
+"""
+question = "when does a baby crawl"
+all_responses = get_response(content,question)
+print(all_responses)
+```
+and output
+```
+...{'score': 0.1757860783933462, 'sentences': ['Babies start rolling over as early as 4 months old.', 'At 6 months old, babies will typically roll over in both directions.']}, {'score': 0.379978361591008, 'sentences': ['Some babies do a commando-type crawl, pulling themselves along the floor by their arms.']}, {'score': 0.4494364165239822, 'sentences': ['By 9 months old, babies typically creep and crawl.']}]}
+```
+In this case, the highest 'scored' answer is 'By 9 months old, babies typically creep and crawl.', given the content this is the best sentence to based off the person's query.
 
 # Tech Spec
 python 3.9 is a requirement
