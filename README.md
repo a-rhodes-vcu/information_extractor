@@ -108,7 +108,7 @@ and output
 ```
 ...{'score': 0.379978361591008, 'sentences': ['Some babies do a commando-type crawl, pulling themselves along the floor by their arms.']}, {'score': 0.4494364165239822, 'sentences': ['By 9 months old, babies typically creep and crawl.']}]}
 ```
-In this case, the highest 'scored' answer is 'By 9 months old, babies typically creep and crawl.', given the content this is the best sentence to based off the person's query.
+In this case, the highest metric is 0.449 and the response is 'By 9 months old, babies typically creep and crawl.', given the content, this is the best sentence based off the person's query.
 
 # Tech Spec
 python 3.9 is a requirement
